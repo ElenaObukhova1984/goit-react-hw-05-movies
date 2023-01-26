@@ -1,6 +1,9 @@
+import { GlobalStyle } from "./GlobalStyle";
+
+
 export const App = () => {
   return (
-    <div
+    <><div
       style={{
         height: '100vh',
         display: 'flex',
@@ -12,5 +15,7 @@ export const App = () => {
     >
       React homework template
     </div>
+    <GlobalStyle /></>
+    
   );
 };
