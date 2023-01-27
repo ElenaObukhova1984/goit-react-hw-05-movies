@@ -1,16 +1,38 @@
 import axios from "axios";
 
-const API_KEY = '30614835-175317e9c07c2c96a1d90d41b';
-axios.defaults.baseURL = 'https://pixabay.com/api/';
+const API_KEY = 'ee39ca8cad92a8b09ec7ae8a83a29296';
+axios.defaults.baseURL = 'https://www.themoviedb.org/3/';
 
 // axios.defaults.params = {
-//   orientation: 'horizontal',
-//   per_page: 12,
+
 // };
 
-export const fetchImages = async (query, page) => {
-    const response = await axios.get(`?q=${query}&page=${page}&key=${API_KEY}&image_type=photo&orientation=horizontal&per_page=12`);
-    console.log(response.data);
-    return response.data;
+
+export const getMovie = async () => {
+  const { data } = await axios.get(`trending/movie/day?${API_KEY}`);
    
-}
+    return data;
+    
+};
+
+export const getMovieById = async id => {
+  const { data } = await axios.get(`movie/${id}?${API_KEY}`);
+  return data;
+};
+
+export const getCastById = async id => {
+  const { data } = await axios.get(`movie/${id}/credits?${API_KEY}`);
+  return data;
+};
+
+export const getReviewsById = async id => {
+  const { data } = await axios.get(`movie/${id}/reviews?${API_KEY}`);
+  return data;
+};
+
+export const getMoviesByQuery = async query => {
+  const { data } = await axios.get(
+    `search/movie?${API_KEY}&language=en-US&page=1&query=${query}&include_adult=false`
+  );
+  return data;
+};
