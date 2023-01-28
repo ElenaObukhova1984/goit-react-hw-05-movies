@@ -8,7 +8,7 @@ export const Title = styled.p`
 `;
 
 export const List = styled.ul`
- 
+ padding-left:30px;
 `;
 
 export const Item = styled.li`

@@ -69,6 +69,7 @@ export const Genres = styled.p`
 export const ListGenres = styled.ul`
   display: flex;
   list-style: none;
+ 
 `;
 
 export const ItemGenre = styled.li`

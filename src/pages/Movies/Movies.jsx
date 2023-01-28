@@ -33,7 +33,7 @@ const Movies = () => {
         setIsLoading(false);
       } catch (error) {
         toast.error('Oops! Not found! Please try again!');
-       
+       setIsLoading(false);
        
       }
     }

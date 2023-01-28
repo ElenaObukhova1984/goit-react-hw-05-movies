@@ -15,4 +15,9 @@ export const GlobalStyle = createGlobalStyle`
             monospace;
     }
 
+ul {
+       padding-left:0px;
+    }
+
+
 `

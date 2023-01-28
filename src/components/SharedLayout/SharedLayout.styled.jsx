@@ -15,6 +15,7 @@ export const Header = styled.header`
   padding: 8px 0;
   margin-bottom: 5px;
   box-shadow: 1px 1px 5px #ccc;
+  border-radius:5px;
 
   > nav {
     display: flex;
