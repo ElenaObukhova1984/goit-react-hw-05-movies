@@ -36,7 +36,7 @@ const Cast = () => {
         {cast && cast.length > 0 &&
           cast.map(({ name, profile_path, id, character }) => (
             <Item key={id}>
-              {profile_path !== null && (
+              {profile_path!== null && (
                 <Image
                   src={`http://image.tmdb.org/t/p/w780/${profile_path}`}
                   alt="foto"

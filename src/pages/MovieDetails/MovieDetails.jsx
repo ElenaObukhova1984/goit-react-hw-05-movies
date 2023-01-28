@@ -4,8 +4,7 @@ import toast, { Toaster } from 'react-hot-toast';
 import * as moviesAPI from 'service/api';
 import { Loader } from 'components/Loader/Loader';
 
-import {
-  Button, Image, Container, ImageHolder, InfoHolder, Title, Score, Overview, Text, Genres, AddInfo, List, Item, ListGenres, ItemGenre,
+import {Button, Image, Container, ImageHolder, InfoHolder, Title, Score, Overview, Text, Genres, AddInfo, List, Item, ListGenres, ItemGenre,
 } from './MovieDetails.styled';
 
 const MovieDetails = () => {

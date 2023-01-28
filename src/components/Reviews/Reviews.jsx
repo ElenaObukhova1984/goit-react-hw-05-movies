@@ -9,18 +9,13 @@ import { List, Item, Author, Review, NoReview } from './Reviews.styled';
 const Reviews = () => {
   const [reviews, setReviews] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
- 
-
   const { movieId } = useParams();
 
   useEffect(() => {
-    
-
-    async function getReviews() {
+      async function getReviews() {
       try {
         setIsLoading(true);
         const { results } = await moviesAPI.getReviewsById(movieId);
-
         setReviews(results);
         setIsLoading(false);
       } catch (error) {
@@ -33,8 +28,7 @@ const Reviews = () => {
 
   return (
     <>
-      
-      {reviews && reviews.length > 0 && (
+        {reviews && reviews.length > 0 && (
         <List>
           {reviews.map(({ author, content, id }) => (
             <Item key={id}>

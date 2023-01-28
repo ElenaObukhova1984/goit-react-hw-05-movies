@@ -8,7 +8,6 @@ import { Loader } from 'components/Loader/Loader';
 const Movies = () => {
   const [titles, setTitles] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
-  
   const [searchParams, setSearchParams] = useSearchParams();
 
   const query = searchParams.get('query') ?? '';
@@ -18,8 +17,6 @@ const Movies = () => {
     if (query === '') {
       return;
     }
-
-   
 
     async function getMovies() {
       try {
@@ -33,9 +30,8 @@ const Movies = () => {
         setIsLoading(false);
       } catch (error) {
         toast.error('Oops! Not found! Please try again!');
-       setIsLoading(false);
-       
-      }
+        setIsLoading(false);
+             }
     }
 
     getMovies();
