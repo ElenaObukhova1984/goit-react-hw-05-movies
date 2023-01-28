@@ -1,13 +1,14 @@
 import { useState, useEffect } from 'react';
 import { useSearchParams, Link, useLocation } from 'react-router-dom';
-
+import toast, { Toaster } from 'react-hot-toast';
 import * as moviesAPI from 'service/api';
 import { Form, Input, Button, List, Item } from './Movies.styled';
+import { Loader } from 'components/Loader/Loader';
 
 const Movies = () => {
   const [titles, setTitles] = useState([]);
-  const [status, setStatus] = useState('');
-  const [error, setError] = useState(null);
+  const [isLoading, setIsLoading] = useState(false);
+  
   const [searchParams, setSearchParams] = useSearchParams();
 
   const query = searchParams.get('query') ?? '';
@@ -18,17 +19,22 @@ const Movies = () => {
       return;
     }
 
-    setStatus('pending');
+   
 
     async function getMovies() {
       try {
+        setIsLoading(true);
         const { results } = await moviesAPI.getMoviesByQuery(query);
+         results.length > 0
+          ? setTitles([...results]): toast.error(
+              `Sorry! We couldn't find any movies by your query ${query}!`
+          );
 
-        setTitles([...results]);
-        setStatus('resolved');
+        setIsLoading(false);
       } catch (error) {
-        setError(error.message);
-        setStatus('rejected');
+        toast.error('Oops! Not found! Please try again!');
+       
+       
       }
     }
 
@@ -49,9 +55,9 @@ const Movies = () => {
         <Input type="text" name="query" />
         <Button type="submit">Search</Button>
       </Form>
-      {status === 'rejected' && <h3>{error}</h3>}
+      
       <List>
-        {status === 'resolved' &&
+        {titles &&
           titles.map(({ id, title }) => (
             <Item key={id}>
               <Link to={`/movies/${id}`} state={{ from: location }}>
@@ -60,6 +66,8 @@ const Movies = () => {
             </Item>
           ))}
       </List>
+      {isLoading && <Loader />}
+      <Toaster />
     </>
   );
 };

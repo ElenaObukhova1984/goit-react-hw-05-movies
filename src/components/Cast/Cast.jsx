@@ -1,28 +1,28 @@
 import { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
-
+import toast from 'react-hot-toast';
 import * as moviesAPI from 'service/api';
+import { Loader } from 'components/Loader/Loader';
 import { List, Item, Image, Name, Character } from '../Cast/Cast.styled';
 
 const Cast = () => {
   const [cast, setCast] = useState([]);
-  const [status, setStatus] = useState('');
-  const [error, setError] = useState(null);
+  const [isLoading, setIsLoading] = useState(false);
+
 
   const { movieId } = useParams();
 
   useEffect(() => {
-    setStatus('pending');
-
-    async function getCast() {
+       async function getCast() {
       try {
+        setIsLoading(true);
         const { cast } = await moviesAPI.getCastById(movieId);
-
         setCast(cast);
-        setStatus('resolved');
+        setIsLoading(false);
+        
       } catch (error) {
-        setError(error.message);
-        setStatus('rejected');
+         toast.error('Oops! Not found! Please try again!');
+        
       }
     }
 
@@ -31,9 +31,9 @@ const Cast = () => {
 
   return (
     <>
-      {status === 'rejected' && <h3>{error}</h3>}
+      
       <List>
-        {status === 'resolved' &&
+        {cast && cast.length > 0 &&
           cast.map(({ name, profile_path, id, character }) => (
             <Item key={id}>
               {profile_path !== null && (
@@ -47,6 +47,7 @@ const Cast = () => {
             </Item>
           ))}
       </List>
+    {isLoading && <Loader />}  
     </>
   );
 };

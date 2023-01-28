@@ -1,29 +1,28 @@
 import { useState, useEffect } from 'react';
 import { Link, useLocation } from 'react-router-dom';
+import toast, { Toaster } from 'react-hot-toast';
 
-import * as movieAPI from 'service/api';
+import * as moviesAPI from 'service/api';
 import { Title, List, Item } from './Home.styled';
+import { Loader } from 'components/Loader/Loader';
 
 const Home = () => {
   const [movies, setMovies] = useState([]);
-  const [status, setStatus] = useState('');
-  const [error, setError] = useState(null);
+  const [isLoading, setIsLoading] = useState(false);
 
   const location = useLocation();
 
   useEffect(() => {
-    setStatus('pending');
-
-    async function getMovies() {
+      async function getMovies() {
       try {
-        const { results } = await movieAPI.getMovie();
-
+        setIsLoading(true);
+        const { results } = await moviesAPI.getMovie();
         setMovies([...results]);
-        setStatus('resolved');
+        setIsLoading(false);
+       
       } catch (error) {
-        setError(error.message);
-        setStatus('rejected');
-      }
+        toast.error('Oops! Not found! Please try again!');
+             }
     }
 
     getMovies();
@@ -31,11 +30,10 @@ const Home = () => {
 
   return (
     <>
-      {status === 'rejected' && <h3>{error}</h3>}
+      {isLoading &&  <Loader/>} 
       <Title>Trending today</Title>
       <List>
-        {status === 'resolved' &&
-          movies.map(({ title, id }) => (
+        {movies.map(({ title, id }) => (
             <Item key={id}>
               <Link to={`/movies/${id}`} state={{ from: location }}>
                 {title}
@@ -43,6 +41,7 @@ const Home = () => {
             </Item>
           ))}
       </List>
+      <Toaster/>
     </>
   );
 };

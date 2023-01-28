@@ -1,28 +1,30 @@
 import { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
-import PropTypes from 'prop-types';
+import toast from 'react-hot-toast';
+
 import * as moviesAPI from 'service/api';
+import { Loader } from 'components/Loader/Loader';
 import { List, Item, Author, Review, NoReview } from './Reviews.styled';
 
 const Reviews = () => {
   const [reviews, setReviews] = useState([]);
-  const [status, setStatus] = useState('');
-  const [error, setError] = useState(null);
+  const [isLoading, setIsLoading] = useState(false);
+ 
 
   const { movieId } = useParams();
 
   useEffect(() => {
-    setStatus('pending');
+    
 
     async function getReviews() {
       try {
+        setIsLoading(true);
         const { results } = await moviesAPI.getReviewsById(movieId);
 
         setReviews(results);
-        setStatus('resolved');
+        setIsLoading(false);
       } catch (error) {
-        setError(error.message);
-        setStatus('rejected');
+       toast.error('Oops! Not found! Please try again!');
       }
     }
 
@@ -31,8 +33,8 @@ const Reviews = () => {
 
   return (
     <>
-      {status === 'rejected' && <h3>{error}</h3>}
-      {status === 'resolved' && reviews.length > 0 && (
+      
+      {reviews && reviews.length > 0 && (
         <List>
           {reviews.map(({ author, content, id }) => (
             <Item key={id}>
@@ -42,17 +44,14 @@ const Reviews = () => {
           ))}
         </List>
       )}
-      {status === 'resolved' && reviews.length === 0 && (
+      {reviews.length === 0 && (
         <NoReview>We dont have any reviews for this movie</NoReview>
       )}
+      {isLoading && <Loader />}
     </>
   );
 };
 
-Reviews.propTypes = {
-  reviews: PropTypes.array,
-  error: PropTypes.any,
-  status: PropTypes.string,
-};
+
 
 export default Reviews;
